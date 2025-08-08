@@ -24,15 +24,22 @@ class OrderService
     public function create(array $data): array
     {
         Cache::forget('orders.active');
-        $order = $this->repo->create($data);
-        $order->load('items');
-        $total = $order->items->sum(fn($item) => $item->quantity * $item->unit_price);
+        // $order = $this->repo->create($data);
+        // $order->load('items');
+        // $total = $order->items->sum(fn($item) => $item->quantity * $item->unit_price);
 
-        return [
-            'order' => $order,
-            'total' => $total,
-        ];
+        // return [
+        //     'order' => $order,
+        //     'total' => $total,
+        // ];
         
+        $order = $this->repo->create($data);
+        $items =  $order->load('items'); 
+        return [
+            "client_name" => $order->client_name ,
+            "items" => $items->items->select('description',"quantity","unit_price"),
+        ];
+
         // return $this->repo->create($data);
     }
 

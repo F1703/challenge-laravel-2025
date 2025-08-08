@@ -77,6 +77,29 @@ class OrderController extends Controller
         return response()->json($data);
     }
 
+    // /**
+    //  * @OA\Post(
+    //  *     path="/api/orders",
+    //  *     operationId="storeOrder",
+    //  *     tags={"Orders"},
+    //  *     summary="Crear una nueva orden",
+    //  *     @OA\RequestBody(
+    //  *         required=true,
+    //  *         @OA\JsonContent(ref="#/components/schemas/StoreOrderRequest")
+    //  *     ),
+    //  *     @OA\Response(
+    //  *         response=201,
+    //  *         description="Orden creada correctamente",
+    //  *         @OA\JsonContent(
+    //  *             ref="#/components/schemas/OrderResponse"
+    //  *         )
+    //  *     ),
+    //  *     @OA\Response(response=422, ref="#/components/responses/ValidationError"),
+    //  *     @OA\Response(response=500, ref="#/components/responses/ServerError"),
+    //  *     @OA\Response(response=405, ref="#/components/responses/MethodNotAllowed")
+    //  * )
+    // */
+        
     /**
      * @OA\Post(
      *     path="/api/orders",
@@ -85,27 +108,41 @@ class OrderController extends Controller
      *     summary="Crear una nueva orden",
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/StoreOrderRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"client_name", "items"},
+     *             @OA\Property(property="client_name", type="string", example="Carlos Gómez"),
+     *             @OA\Property(
+     *                 property="items",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     required={"description", "quantity", "unit_price"},
+     *                     @OA\Property(property="description", type="string", example="Lomo saltado"),
+     *                     @OA\Property(property="quantity", type="integer", example=1),
+     *                     @OA\Property(property="unit_price", type="number", format="float", example=60)
+     *                 )
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Orden creada correctamente",
-     *         @OA\JsonContent(
-     *             ref="#/components/schemas/OrderResponse"
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/Order")
      *     ),
      *     @OA\Response(response=422, ref="#/components/responses/ValidationError"),
      *     @OA\Response(response=500, ref="#/components/responses/ServerError"),
      *     @OA\Response(response=405, ref="#/components/responses/MethodNotAllowed")
      * )
-    */
-        
+     */
     public function store(StoreOrderRequest $request): JsonResponse
     {
-        $data = [];
-        $data["status"] = true ; 
-        $data["data"] = $this->service->create($request->validated()) ; 
-        return response()->json($data, 201);
+        // $data = [];
+        // $data["status"] = true ; 
+        // $data["data"] = $this->service->create($request->validated()) ; 
+        // return response()->json($data, 201);
+        return response()->json($this->service->create($request->validated()), 201);
+
     }
 
     /**

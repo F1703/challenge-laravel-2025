@@ -129,7 +129,43 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/StoreOrderRequest"
+                                "required": [
+                                    "client_name",
+                                    "items"
+                                ],
+                                "properties": {
+                                    "client_name": {
+                                        "type": "string",
+                                        "example": "Carlos Gómez"
+                                    },
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "description",
+                                                "quantity",
+                                                "unit_price"
+                                            ],
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Lomo saltado"
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "unit_price": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 60
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -140,7 +176,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OrderResponse"
+                                    "$ref": "#/components/schemas/Order"
                                 }
                             }
                         }
@@ -319,32 +355,12 @@
             },
             "Order": {
                 "required": [
-                    "id",
-                    "client_name",
-                    "status"
+                    "client_name"
                 ],
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 11
-                    },
                     "client_name": {
                         "type": "string",
                         "example": "Cliente recurrente"
-                    },
-                    "status": {
-                        "type": "string",
-                        "example": "initiated"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-08-08T10:07:12.000000Z"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-08-08T10:07:12.000000Z"
                     },
                     "items": {
                         "type": "array",
@@ -357,20 +373,11 @@
             },
             "OrderItem": {
                 "required": [
-                    "order_id",
                     "description",
                     "quantity",
                     "unit_price"
                 ],
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 31
-                    },
-                    "order_id": {
-                        "type": "integer",
-                        "example": 11
-                    },
                     "description": {
                         "type": "string",
                         "maxLength": 500,
@@ -386,16 +393,6 @@
                         "format": "float",
                         "minimum": 0,
                         "example": 2
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-08-08T10:07:12.000000Z"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2025-08-08T10:07:12.000000Z"
                     }
                 },
                 "type": "object"
